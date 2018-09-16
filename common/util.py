@@ -124,8 +124,19 @@ def convert_one_hot(corpus, vocab_size):
 
     return one_hot
 
+def clip_grads(grads, max_norm):
+    total_norm = 0
+    for grad in grads:
+        total_norm += np.sum(grad ** 2)
+    total_norm = np.sqrt(total_norm)
 
-#text = "You say goodbye and I say hello."
+    rate = max_norm / (total_norm + 1e-6)
+    if rate < 1:
+        for grad in grads:
+            grad *= rate
+
+
+# text = "You say goodbye and I say hello."
 # text = "You see the moon and I see the sun."
 # corpus, word_to_id, id_to_word = preprocess(text)
 # contexts, target = create_contexts_target(corpus)
@@ -133,7 +144,6 @@ def convert_one_hot(corpus, vocab_size):
 #
 # target = convert_one_hot(target, vocab_size)
 # contexts = convert_one_hot(contexts, vocab_size)
-
 
 # C = create_co_matrix(corpus, vocab_size)
 # # most_similar("moon", word_to_id, id_to_word, C, 5)
