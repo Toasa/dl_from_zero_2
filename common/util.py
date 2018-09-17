@@ -136,6 +136,20 @@ def clip_grads(grads, max_norm):
             grad *= rate
 
 
+def to_cpu(x):
+    import numpy
+    if type(x) == numpy.ndarray:
+        return x
+    return np.asnumpy(x)
+
+
+def to_gpu(x):
+    import cupy
+    if type(x) == cupy.ndarray:
+        return x
+    return cupy.asarray(x)
+
+
 # text = "You say goodbye and I say hello."
 # text = "You see the moon and I see the sun."
 # corpus, word_to_id, id_to_word = preprocess(text)
